@@ -11,6 +11,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import { useTimeSlotsStore, SubComment, TimeSlot } from "../store/timeslots-store";
 import ExportButton from "./ExportButton";
+import ExpandingTextField from "./ExpandingTextField";
 
 const EMPTY_SLOTS: TimeSlot[] = [];
 const EMPTY_COMMENTS: SubComment[] = [];
@@ -56,7 +57,6 @@ export default function DailyTotal({ date }: Props) {
     setShowComments(true);
   };
 
-  const cellSx = { py: "4px", px: 1 };
   const boxSx = {
     border: "2px solid",
     borderColor: "primary.main",
@@ -90,7 +90,8 @@ export default function DailyTotal({ date }: Props) {
               sx={{
                 display: "flex",
                 gap: 1.5,
-                alignItems: "center",
+                alignItems: "flex-start",
+                
                 py: "4px",
                 borderBottom: i < comments.length - 1 ? "1px solid #e0e0e0" : "none",
               }}
@@ -103,14 +104,14 @@ export default function DailyTotal({ date }: Props) {
                 variant="outlined"
                 sx={{ width: 172, flexShrink: 0 }}
               />
-              <TextField
-                value={c.description}
-                onChange={(e) => updateDayComment(date, { ...c, description: e.target.value })}
-                placeholder="Description"
-                size="small"
-                variant="outlined"
-                sx={{ flex: 1 }}
-              />
+              <ExpandingTextField
+                  value={c.description}
+                  onChange={(e) => updateDayComment(date, { ...c, description: e.target.value })}
+                  placeholder="Description"
+                  size="small"
+                  variant="outlined"
+                  sx={{ flex: 1 }}
+                />
               <IconButton
                 size="small"
                 onClick={() => deleteDayComment(date, c.id)}
@@ -148,15 +149,14 @@ export default function DailyTotal({ date }: Props) {
           </Typography>
         </Box>
 
-        <TextField
-          value={note}
-          onChange={(e) => updateDayNote(date, e.target.value)}
-          placeholder="Day comment…"
-          size="small"
-          variant="outlined"
-          sx={{ flex: 1 }}
-        />
-
+          <ExpandingTextField
+            value={note}
+            onChange={(e) => updateDayNote(date, e.target.value)}
+            placeholder="Day comment…"
+            size="small"
+            variant="outlined"
+            sx={{ flex: 1 }}
+          />
         <IconButton size="small" onClick={addComment} color="primary" title="Add day comment">
           <AddIcon fontSize="small" />
         </IconButton>

@@ -3,13 +3,16 @@
 Derived from [initial.md](initial.md). Unchecked = not yet implemented.
 
 ## Scaffolding
+
 - [x] Next.js SPA scaffolded with required dependencies
 
 ## Main app at `/app`
+
 - [x] Page renders with no header, footer, or side menu
 - [x] Time-slots table as the main content
 
 ## Month/date navigation
+
 - [x] Horizontal tab strip showing all months of the current year
 - [x] All month tabs are clickable
 - [x] Horizontal tab strip showing all dates of the selected month in `00` format
@@ -17,6 +20,7 @@ Derived from [initial.md](initial.md). Unchecked = not yet implemented.
 - [x] Date tabs render bright/dark depending on whether time slots exist for that day
 
 ## Time-slot row
+
 - [x] Each time slot is a `<tr>`
 - [x] START input accepts 4 digits in `HH:mm` format
 - [x] Pressing Tab in START moves focus to END
@@ -56,6 +60,11 @@ Derived from [initial.md](initial.md). Unchecked = not yet implemented.
 - [x] When clicked the button should open the OS download window and export the entire JSON saved in local storage
 - [x] default name of the file should be timeslots-{curren timestamp}.json
 
+## Add time validation
+
+- [x] When a timeslot END time is less then the start time, make the input field red
+- [x] Add a helpful message above the input, explaining the problem
+- [x] Only remove the message when the times are valid or the user deletes the last character of the END input
 
 ## Design
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { memo, useRef, useState } from "react";
+import Box from "@mui/material/Box";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import TextField from "@mui/material/TextField";
@@ -10,6 +11,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import TimeInput from "./TimeInput";
+import ExpandingTextField from "./ExpandingTextField";
 import { TimeSlot, SubComment, useTimeSlotsStore } from "../store/timeslots-store";
 
 const ROW_COLORS = ["#ffffff", "#F1F8E9"];
@@ -36,7 +38,7 @@ const SlotRow = memo(function SlotRow({ slot, date, index }: Props) {
   const deleteSubComment = useTimeSlotsStore((s) => s.deleteSubComment);
 
   const endInputRef = useRef<HTMLInputElement>(null);
-  const [showSubs, setShowSubs] = useState(true);
+  const [showSubs, setShowSubs] = useState(false);
 
   const update = (patch: Partial<TimeSlot>) =>
     updateSlot(date, { ...slot, ...patch });
@@ -56,10 +58,11 @@ const SlotRow = memo(function SlotRow({ slot, date, index }: Props) {
   const deleteSub = (subId: string) => deleteSubComment(date, slot.id, subId);
 
   const minutes = calcMinutes(slot.start, slot.end);
+  const endError = slot.start.length === 5 && slot.end.length === 5 && minutes === null;
   const hasSubs = slot.subComments.length > 0;
   const bg = ROW_COLORS[index % 2];
 
-  const cellSx = { py: "6px", px: 1 };
+  const cellSx = { py: "6px", px: 1, verticalAlign: "top" };
   const separator = "2px solid #a5d6a7";
   const mainRowIsLast = !hasSubs || !showSubs;
 
@@ -82,16 +85,49 @@ const SlotRow = memo(function SlotRow({ slot, date, index }: Props) {
 
         {/* END */}
         <TableCell sx={{ ...cellSx, width: 90 }}>
-          <TimeInput
-            value={slot.end}
-            onChange={(v) => update({ end: v })}
-            inputRef={endInputRef}
-          />
+          <Box sx={{ position: "relative", display: "inline-block" }}>
+            {endError && (
+              <Box
+                sx={{
+                  position: "absolute",
+                  bottom: "calc(100% + 6px)",
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                  bgcolor: "error.main",
+                  color: "#fff",
+                  px: 1,
+                  py: "2px",
+                  borderRadius: "4px",
+                  whiteSpace: "nowrap",
+                  fontSize: "0.65rem",
+                  lineHeight: 1.4,
+                  zIndex: 10,
+                  "&::after": {
+                    content: '""',
+                    position: "absolute",
+                    top: "100%",
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    border: "5px solid transparent",
+                    borderTopColor: "error.main",
+                  },
+                }}
+              >
+                END must be after START
+              </Box>
+            )}
+            <TimeInput
+              value={slot.end}
+              onChange={(v) => update({ end: v })}
+              inputRef={endInputRef}
+              error={endError}
+            />
+          </Box>
         </TableCell>
 
         {/* Comment */}
         <TableCell sx={cellSx}>
-          <TextField
+          <ExpandingTextField
             value={slot.comment}
             onChange={(e) => update({ comment: e.target.value })}
             placeholder="Comment…"
@@ -107,7 +143,7 @@ const SlotRow = memo(function SlotRow({ slot, date, index }: Props) {
             <AddIcon fontSize="small" />
           </IconButton>
           <IconButton size="small" onClick={() => setShowSubs((v) => !v)} color="primary" disabled={!hasSubs}>
-            {showSubs ? <ExpandLessIcon fontSize="small" /> : <ExpandMoreIcon fontSize="small" />}
+            {!hasSubs ? <ExpandMoreIcon fontSize="small" /> : showSubs ? <ExpandLessIcon fontSize="small" /> : <ExpandMoreIcon fontSize="small" />}
           </IconButton>
           <IconButton
             size="small"
@@ -144,7 +180,7 @@ const SlotRow = memo(function SlotRow({ slot, date, index }: Props) {
               />
             </TableCell>
             <TableCell sx={cellSx}>
-              <TextField
+              <ExpandingTextField
                 value={sub.description}
                 onChange={(e) => updateSub({ ...sub, description: e.target.value })}
                 placeholder="Description"

@@ -8,6 +8,7 @@ type Props = {
   onChange: (val: string) => void;
   tabNextRef?: RefObject<HTMLInputElement | null>;
   inputRef?: RefObject<HTMLInputElement | null>;
+  error?: boolean;
 };
 
 function format(raw: string): string {
@@ -16,7 +17,7 @@ function format(raw: string): string {
   return `${digits.slice(0, 2)}:${digits.slice(2)}`;
 }
 
-export default function TimeInput({ value, onChange, tabNextRef, inputRef }: Props) {
+export default function TimeInput({ value, onChange, tabNextRef, inputRef, error }: Props) {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     onChange(format(e.target.value));
   };
@@ -34,6 +35,7 @@ export default function TimeInput({ value, onChange, tabNextRef, inputRef }: Pro
       onChange={handleChange}
       onKeyDown={handleKeyDown}
       inputRef={inputRef}
+      error={error}
       placeholder="HH:mm"
       size="small"
       variant="outlined"
