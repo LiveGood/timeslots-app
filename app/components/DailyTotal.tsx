@@ -87,20 +87,19 @@ export default function DailyTotal({ date }: Props) {
               key={c.id}
               sx={{
                 display: "flex",
-                gap: 1,
+                gap: 1.5,
                 alignItems: "center",
                 py: "4px",
                 borderBottom: i < comments.length - 1 ? "1px solid #e0e0e0" : "none",
               }}
             >
-              <Box sx={{ width: 52 + 90 + 90, flexShrink: 0 }} />
               <TextField
                 value={c.title}
                 onChange={(e) => updateComment({ ...c, title: e.target.value })}
                 placeholder="Title"
                 size="small"
                 variant="outlined"
-                sx={{ width: 160 }}
+                sx={{ width: 172, flexShrink: 0 }}
               />
               <TextField
                 value={c.description}
