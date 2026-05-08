@@ -77,7 +77,7 @@ const SlotRow = memo(function SlotRow({ slot, date, index }: Props) {
         </TableCell>
 
         {/* START */}
-        <TableCell sx={{ ...cellSx, width: 90 }}>
+        <TableCell sx={{ ...cellSx, width: 90, verticalAlign: "middle" }}>
           <TimeInput
             value={slot.start}
             onChange={(v) => update({ start: v })}
@@ -86,7 +86,7 @@ const SlotRow = memo(function SlotRow({ slot, date, index }: Props) {
         </TableCell>
 
         {/* END */}
-        <TableCell sx={{ ...cellSx, width: 90 }}>
+        <TableCell sx={{ ...cellSx, width: 90, verticalAlign: "middle" }}>
           <Box sx={{ position: "relative", display: "inline-block" }}>
             {endError && (
               <Box
@@ -128,7 +128,7 @@ const SlotRow = memo(function SlotRow({ slot, date, index }: Props) {
         </TableCell>
 
         {/* Comment */}
-        <TableCell sx={cellSx}>
+        <TableCell sx={{ ...cellSx, verticalAlign: "middle" }}>
           <ExpandingTextField
             value={slot.comment}
             onChange={(e) => update({ comment: e.target.value })}
@@ -136,6 +136,7 @@ const SlotRow = memo(function SlotRow({ slot, date, index }: Props) {
             size="small"
             fullWidth
             variant="outlined"
+            sx={{ "& .MuiInputBase-input": { padding: "4px 8px" } }}
           />
         </TableCell>
 

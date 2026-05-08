@@ -9,3 +9,4 @@
 - [x] In the sub comments sections, make sure the show/hide arrow is visible whether sub-comment is added or not, but it must be not clickable and with grey color, if not sub-comments are added.
 - [x] Update README.md with simple with our current tech stack. UI, context, next.js Add it on top before "Getting Started"
 - [x] When clicking on a comment section that has more characters than the current length, add enough rows to the comment input to make the whole text visible
+- [x] Reduce height of start/end/comment inputs in SlotRow via padding and align all three to the same height

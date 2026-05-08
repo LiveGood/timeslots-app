@@ -14,13 +14,10 @@ export default function ExpandingTextField({ sx, onFocus, onBlur, ...rest }: Tex
       onBlur={(e) => { setFocused(false); onBlur?.(e); }}
       sx={[
         ...(Array.isArray(sx) ? sx : [sx]),
-        !focused ? {
-          "& .MuiInputBase-input": {
-            textOverflow: "ellipsis",
-            overflow: "hidden"
-          }
-        } : {},
-        { "& textarea": { resize: "none" }, },
+        !focused
+          ? { "& .MuiInputBase-input": { textOverflow: "ellipsis", overflow: "hidden" } }
+          : { "& .MuiOutlinedInput-root": { padding: 0 } },
+        { "& textarea": { resize: "none" } },
       ]}
     />
   );

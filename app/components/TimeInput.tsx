@@ -48,6 +48,9 @@ export default function TimeInput({ value, onChange, tabNextRef, inputRef, error
             fontSize: "0.85rem",
           },
         },
+        htmlInput: {
+          style: { padding: "6px 8px" },
+        },
       }}
     />
   );
