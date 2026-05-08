@@ -15,6 +15,7 @@ const MONTHS = [
 
 const FIRST_YEAR = 2020;
 const currentYear = new Date().getFullYear();
+const currentMonth = new Date().getMonth(); // 0-indexed
 const YEAR_OPTIONS = Array.from(
   { length: currentYear + 1 - FIRST_YEAR },
   (_, i) => FIRST_YEAR + i
@@ -87,6 +88,7 @@ export default function CalendarNav({ selectedDate, onDateChange }: Props) {
               color: "text.secondary",
             },
             "& .Mui-selected": { color: "primary.dark" },
+            "& .MuiTab-root.Mui-disabled": { color: "text.disabled", opacity: 1 },
             "& .MuiTabs-indicator": {
               backgroundColor: "primary.main",
               height: 3,
@@ -94,7 +96,12 @@ export default function CalendarNav({ selectedDate, onDateChange }: Props) {
           }}
         >
           {MONTHS.map((m, i) => (
-            <Tab key={m} label={m} value={i} />
+            <Tab
+              key={m}
+              label={m}
+              value={i}
+              disabled={selectedYear === currentYear && i > currentMonth}
+            />
           ))}
         </Tabs>
 

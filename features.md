@@ -47,6 +47,7 @@ Derived from [initial.md](initial.md). Unchecked = not yet implemented.
 
 - [x] On the same tab level as the months, on the top right add dropdown of years
 - [x] Tab should contain the current year and look the same as the months tab, but it must have a visible "clickable" property to change the year
+- [x] If the select year is the current year make all months after the current one disabled and non-clickable
 
 ## TODO: Create csv export/import format
 - [] 
