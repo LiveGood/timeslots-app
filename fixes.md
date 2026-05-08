@@ -4,3 +4,4 @@
 - [x] Add bolder bottom border separation between time-slot rows
 - [x] Fix the border between slots to be visualised properly on the bottom when new comments are added
 - [x] Fix: "Hydration failed because the server rendered HTML didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:"
+- [x] Make padding between dates smaller so the maximum of 31 dates is visible on the screen without clicking the left or right icons

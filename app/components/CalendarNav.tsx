@@ -92,10 +92,9 @@ export default function CalendarNav({ selectedDate, onDateChange }: Props) {
       <Tabs
         value={selectedDate}
         onChange={handleDateChange}
-        variant="scrollable"
-        scrollButtons="auto"
+        variant="fullWidth"
         sx={{
-          minHeight: 36,
+          minHeight: 32,
           "& .MuiTabs-indicator": {
             backgroundColor: "primary.dark",
             height: 2,
@@ -111,10 +110,10 @@ export default function CalendarNav({ selectedDate, onDateChange }: Props) {
               label={dayNum}
               value={dateKey}
               sx={{
-                minWidth: 36,
-                minHeight: 36,
-                padding: "4px 2px",
-                fontSize: "0.75rem",
+                minWidth: 0,
+                minHeight: 32,
+                padding: "2px 0",
+                fontSize: "0.7rem",
                 fontWeight: active ? 700 : 400,
                 color: active ? "primary.dark" : "text.disabled",
                 "&.Mui-selected": {
