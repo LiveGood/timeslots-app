@@ -71,7 +71,9 @@ const SlotRow = memo(function SlotRow({ slot, date, index }: Props) {
       <TableRow sx={{ bgcolor: bg, "& .MuiTableCell-root": { borderBottom: mainRowIsLast ? separator : "none" } }}>
         {/* Minutes */}
         <TableCell sx={{ ...cellSx, width: 52, textAlign: "center", color: "primary.dark", fontWeight: 700, fontSize: "0.8rem" }}>
-          {minutes !== null ? `${minutes}m` : ""}
+          <Box sx={{ marginTop: "10px" }}>
+            {minutes !== null ? `${minutes}m` : ""}
+          </Box>
         </TableCell>
 
         {/* START */}
