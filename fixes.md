@@ -7,3 +7,4 @@
 - [x] Make padding between dates smaller so the maximum of 31 dates is visible on the screen without clicking the left or right icons
 - [x] Fix the extra daily comments UI, such that title shows on the left side hand and it's width is as much as the combined width of min+total tabs and the description shows with the same width and above the main 'Day comment' input
 - [x] In the sub comments sections, make sure the show/hide arrow is visible whether sub-comment is added or not, but it must be not clickable and with grey color, if not sub-comments are added.
+- [x] Update README.md with simple with our current tech stack. UI, context, next.js Add it on top before "Getting Started"
