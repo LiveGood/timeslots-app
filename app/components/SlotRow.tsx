@@ -4,7 +4,6 @@ import { memo, useRef, useState } from "react";
 import Box from "@mui/material/Box";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
-import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -12,10 +11,10 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import TimeInput from "./TimeInput";
 import ExpandingTextField from "./ExpandingTextField";
+import SubCommentRows from "./SubCommentRows";
 import { TimeSlot, SubComment, useTimeSlotsStore } from "../store/timeslots-store";
 
 const ROW_COLORS = ["#ffffff", "#F1F8E9"];
-const SUB_BG = "#FAFAFA";
 
 function calcMinutes(start: string, end: string): number | null {
   const parse = (t: string) => {
@@ -63,6 +62,7 @@ const SlotRow = memo(function SlotRow({ slot, date, index }: Props) {
   const bg = ROW_COLORS[index % 2];
 
   const cellSx = { py: "6px", px: 1, verticalAlign: "top" };
+  const timeSx = { ...cellSx, width: 0, verticalAlign: "top" }
   const separator = "2px solid #a5d6a7";
   const mainRowIsLast = !hasSubs || !showSubs;
 
@@ -77,7 +77,7 @@ const SlotRow = memo(function SlotRow({ slot, date, index }: Props) {
         </TableCell>
 
         {/* START */}
-        <TableCell sx={{ ...cellSx, width: 90, verticalAlign: "middle" }}>
+        <TableCell sx={timeSx}>
           <TimeInput
             value={slot.start}
             onChange={(v) => update({ start: v })}
@@ -86,7 +86,7 @@ const SlotRow = memo(function SlotRow({ slot, date, index }: Props) {
         </TableCell>
 
         {/* END */}
-        <TableCell sx={{ ...cellSx, width: 90, verticalAlign: "middle" }}>
+        <TableCell sx={timeSx}>
           <Box sx={{ position: "relative", display: "inline-block" }}>
             {endError && (
               <Box
@@ -159,50 +159,13 @@ const SlotRow = memo(function SlotRow({ slot, date, index }: Props) {
         </TableCell>
       </TableRow>
 
-      {/* Sub-comment rows */}
-      {showSubs &&
-        slot.subComments.map((sub, si) => (
-          <TableRow
-            key={sub.id}
-            sx={{
-              bgcolor: SUB_BG,
-              "& .MuiTableCell-root": {
-                borderBottom: si === slot.subComments.length - 1 ? separator : "none",
-              },
-            }}
-          >
-            <TableCell colSpan={2} />
-            <TableCell sx={cellSx}>
-              <TextField
-                value={sub.title}
-                onChange={(e) => updateSub({ ...sub, title: e.target.value })}
-                placeholder="Title"
-                size="small"
-                fullWidth
-                variant="outlined"
-              />
-            </TableCell>
-            <TableCell sx={cellSx}>
-              <ExpandingTextField
-                value={sub.description}
-                onChange={(e) => updateSub({ ...sub, description: e.target.value })}
-                placeholder="Description"
-                size="small"
-                fullWidth
-                variant="outlined"
-              />
-            </TableCell>
-            <TableCell sx={{ ...cellSx, textAlign: "right" }}>
-              <IconButton
-                size="small"
-                onClick={() => deleteSub(sub.id)}
-                sx={{ color: "text.secondary", "&:hover": { color: "error.main" } }}
-              >
-                <DeleteIcon fontSize="small" />
-              </IconButton>
-            </TableCell>
-          </TableRow>
-        ))}
+      {showSubs && (
+        <SubCommentRows
+          subComments={slot.subComments}
+          onUpdate={updateSub}
+          onDelete={deleteSub}
+        />
+      )}
     </>
   );
 });

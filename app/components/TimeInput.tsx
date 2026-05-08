@@ -42,7 +42,7 @@ export default function TimeInput({ value, onChange, tabNextRef, inputRef, error
       slotProps={{
         input: {
           style: {
-            width: 70,
+            width: 60,
             textAlign: "center",
             fontFamily: "monospace",
             fontSize: "0.85rem",

@@ -155,7 +155,10 @@ export default function DailyTotal({ date }: Props) {
             placeholder="Day comment…"
             size="small"
             variant="outlined"
-            sx={{ flex: 1 }}
+          sx={{
+            flex: 1,
+            "& .MuiInputBase-input": { padding: "4px 8px" }
+          }}
           />
         <IconButton size="small" onClick={addComment} color="primary" title="Add day comment">
           <AddIcon fontSize="small" />

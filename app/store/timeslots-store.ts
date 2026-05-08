@@ -1,8 +1,9 @@
 "use client";
 
 import { create } from "zustand";
-import { persist, createJSONStorage } from "zustand/middleware";
+import { persist, createJSONStorage, StorageValue } from "zustand/middleware";
 
+export const TIME_SLOTS = "timeslots_v1";
 export type SubComment = { id: string; title: string; description: string };
 export type TimeSlot = {
   id: string;
@@ -33,6 +34,35 @@ type Actions = {
   deleteDayComment: (date: string, commentId: string) => void;
   updateDayNote: (date: string, note: string) => void;
 };
+
+// Cleanse the storage from any empty inputs added before
+const getFilteredStorage = () => {
+  const st = createJSONStorage(() => localStorage)
+  
+  if (st?.getItem(TIME_SLOTS)) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const currentState = st?.getItem(TIME_SLOTS).state as unknown as State;
+    const slots = currentState.slots;
+
+    // Filter emptyValues
+    Object.keys(slots).map(key => {
+      currentState.slots[key] = slots[key].filter(timeSlot => {
+        if (timeSlot.start !== '' || timeSlot.end !== '') {
+          return timeSlot;
+        }
+      })
+    })
+
+    st.setItem(TIME_SLOTS, {
+      state: currentState,
+      // TODO: fix this in the future if needed
+      version: 0
+    } as unknown as StorageValue<unknown>)
+  }
+
+  return st;
+}
 
 export const useTimeSlotsStore = create<State & Actions>()(
   persist(
@@ -91,7 +121,7 @@ export const useTimeSlotsStore = create<State & Actions>()(
     }),
     {
       name: "timeslots_v1",
-      storage: createJSONStorage(() => localStorage),
+      storage: getFilteredStorage(),
       skipHydration: true,
     }
   )
