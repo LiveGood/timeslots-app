@@ -10,6 +10,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import { useTimeSlotsStore, SubComment, TimeSlot } from "../store/timeslots-store";
+import ExportButton from "./ExportButton";
 
 const EMPTY_SLOTS: TimeSlot[] = [];
 const EMPTY_COMMENTS: SubComment[] = [];
@@ -121,6 +122,11 @@ export default function DailyTotal({ date }: Props) {
           ))}
         </Box>
       )}
+
+      {/* Download button — absolute, always at the right edge regardless of zoom */}
+      <Box sx={{ position: "absolute", bottom: 13, right: 8 }}>
+        <ExportButton />
+      </Box>
 
       {/* Total bar */}
       <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, py: 0.75 }}>

@@ -49,8 +49,13 @@ Derived from [initial.md](initial.md). Unchecked = not yet implemented.
 - [x] Tab should contain the current year and look the same as the months tab, but it must have a visible "clickable" property to change the year
 - [x] If the select year is the current year make all months after the current one disabled and non-clickable
 
-## TODO: Create csv export/import format
-- [] 
+## Export button
+
+- [x] On the same row as total daily timeslots, add export button which is just a download icon with the same green we already use
+- [x] Make a separate component file
+- [x] When clicked the button should open the OS download window and export the entire JSON saved in local storage
+- [x] default name of the file should be timeslots-{curren timestamp}.json
+
 
 ## Design
 
