@@ -111,11 +111,9 @@ export default function SlotRow({ slot, date, index }: Props) {
           <IconButton size="small" onClick={addSub} color="primary" title="Add sub-comment">
             <AddIcon fontSize="small" />
           </IconButton>
-          {hasSubs && (
-            <IconButton size="small" onClick={() => setShowSubs((v) => !v)} color="primary">
-              {showSubs ? <ExpandLessIcon fontSize="small" /> : <ExpandMoreIcon fontSize="small" />}
-            </IconButton>
-          )}
+          <IconButton size="small" onClick={() => setShowSubs((v) => !v)} color="primary" disabled={!hasSubs}>
+            {showSubs ? <ExpandLessIcon fontSize="small" /> : <ExpandMoreIcon fontSize="small" />}
+          </IconButton>
           <IconButton
             size="small"
             onClick={deleteSlot}

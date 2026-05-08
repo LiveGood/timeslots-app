@@ -153,11 +153,9 @@ export default function DailyTotal({ date }: Props) {
         <IconButton size="small" onClick={addComment} color="primary" title="Add day comment">
           <AddIcon fontSize="small" />
         </IconButton>
-        {hasComments && (
-          <IconButton size="small" onClick={() => setShowComments((v) => !v)} color="primary">
-            {showComments ? <ExpandLessIcon fontSize="small" /> : <ExpandMoreIcon fontSize="small" />}
-          </IconButton>
-        )}
+        <IconButton size="small" onClick={() => setShowComments((v) => !v)} color="primary" disabled={!hasComments}>
+          {showComments ? <ExpandLessIcon fontSize="small" /> : <ExpandMoreIcon fontSize="small" />}
+        </IconButton>
       </Box>
     </Box>
   );
