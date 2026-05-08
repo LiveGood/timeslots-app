@@ -4,7 +4,7 @@ import { useState } from "react";
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
-import { useTimeSlots } from "../store/timeslots-context";
+import { useTimeSlotsStore } from "../store/timeslots-store";
 
 const MONTHS = [
   "Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -32,13 +32,11 @@ export default function CalendarNav({ selectedDate, onDateChange }: Props) {
     parseInt(selectedDate.slice(5, 7), 10) - 1
   );
 
-  const { hasSlots } = useTimeSlots();
+  const slots = useTimeSlotsStore((s) => s.slots);
 
   const handleMonthChange = (_: React.SyntheticEvent, value: number) => {
     setSelectedMonth(value);
-    // Move selected date to day 01 of the new month (avoids invalid dates)
-    const newDay = pad(1);
-    onDateChange(`${year}-${pad(value + 1)}-${newDay}`);
+    onDateChange(`${year}-${pad(value + 1)}-01`);
   };
 
   const handleDateChange = (_: React.SyntheticEvent, value: string) => {
@@ -102,7 +100,7 @@ export default function CalendarNav({ selectedDate, onDateChange }: Props) {
         }}
       >
         {dateKeys.map((dateKey) => {
-          const active = hasSlots(dateKey);
+          const active = (slots[dateKey]?.length ?? 0) > 0;
           const dayNum = dateKey.slice(8);
           return (
             <Tab

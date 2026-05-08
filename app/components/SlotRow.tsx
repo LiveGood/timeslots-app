@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { memo, useRef, useState } from "react";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import TextField from "@mui/material/TextField";
@@ -10,7 +10,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import TimeInput from "./TimeInput";
-import { TimeSlot, SubComment, useTimeSlots } from "../store/timeslots-context";
+import { TimeSlot, SubComment, useTimeSlotsStore } from "../store/timeslots-store";
 
 const ROW_COLORS = ["#ffffff", "#F1F8E9"];
 const SUB_BG = "#FAFAFA";
@@ -29,35 +29,31 @@ function calcMinutes(start: string, end: string): number | null {
 
 type Props = { slot: TimeSlot; date: string; index: number };
 
-export default function SlotRow({ slot, date, index }: Props) {
-  const { dispatch } = useTimeSlots();
+const SlotRow = memo(function SlotRow({ slot, date, index }: Props) {
+  const updateSlot = useTimeSlotsStore((s) => s.updateSlot);
+  const deleteSlot = useTimeSlotsStore((s) => s.deleteSlot);
+  const addSubComment = useTimeSlotsStore((s) => s.addSubComment);
+  const deleteSubComment = useTimeSlotsStore((s) => s.deleteSubComment);
+
   const endInputRef = useRef<HTMLInputElement>(null);
   const [showSubs, setShowSubs] = useState(true);
 
   const update = (patch: Partial<TimeSlot>) =>
-    dispatch({ type: "UPDATE_SLOT", date, slot: { ...slot, ...patch } });
+    updateSlot(date, { ...slot, ...patch });
 
   const updateSub = (sub: SubComment) =>
-    dispatch({
-      type: "UPDATE_SLOT",
-      date,
-      slot: {
-        ...slot,
-        subComments: slot.subComments.map((s) => (s.id === sub.id ? sub : s)),
-      },
+    updateSlot(date, {
+      ...slot,
+      subComments: slot.subComments.map((s) => (s.id === sub.id ? sub : s)),
     });
 
   const addSub = () => {
     const sub: SubComment = { id: crypto.randomUUID(), title: "", description: "" };
-    dispatch({ type: "ADD_SUBCOMMENT", date, slotId: slot.id, sub });
+    addSubComment(date, slot.id, sub);
     setShowSubs(true);
   };
 
-  const deleteSub = (subId: string) =>
-    dispatch({ type: "DELETE_SUBCOMMENT", date, slotId: slot.id, subId });
-
-  const deleteSlot = () =>
-    dispatch({ type: "DELETE_SLOT", date, slotId: slot.id });
+  const deleteSub = (subId: string) => deleteSubComment(date, slot.id, subId);
 
   const minutes = calcMinutes(slot.start, slot.end);
   const hasSubs = slot.subComments.length > 0;
@@ -65,7 +61,6 @@ export default function SlotRow({ slot, date, index }: Props) {
 
   const cellSx = { py: "6px", px: 1 };
   const separator = "2px solid #a5d6a7";
-  // Bold border belongs on the last visible row of this slot group
   const mainRowIsLast = !hasSubs || !showSubs;
 
   return (
@@ -107,7 +102,7 @@ export default function SlotRow({ slot, date, index }: Props) {
         </TableCell>
 
         {/* Actions */}
-        <TableCell sx={{ ...cellSx, width: 75, whiteSpace: "nowrap" }}>
+        <TableCell sx={{ ...cellSx, width: 100, whiteSpace: "nowrap" }}>
           <IconButton size="small" onClick={addSub} color="primary" title="Add sub-comment">
             <AddIcon fontSize="small" />
           </IconButton>
@@ -116,7 +111,7 @@ export default function SlotRow({ slot, date, index }: Props) {
           </IconButton>
           <IconButton
             size="small"
-            onClick={deleteSlot}
+            onClick={() => deleteSlot(date, slot.id)}
             sx={{ color: "text.secondary", "&:hover": { color: "error.main" } }}
             title="Delete slot"
           >
@@ -171,4 +166,6 @@ export default function SlotRow({ slot, date, index }: Props) {
         ))}
     </>
   );
-}
+});
+
+export default SlotRow;

@@ -5,16 +5,18 @@ import TableBody from "@mui/material/TableBody";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
-import { useTimeSlots, TimeSlot } from "../store/timeslots-context";
+import { useTimeSlotsStore, TimeSlot } from "../store/timeslots-store";
 import SlotRow from "./SlotRow";
+
+const EMPTY_SLOTS: TimeSlot[] = [];
 
 type Props = { date: string };
 
 export default function SlotsTable({ date }: Props) {
-  const { slots, dispatch } = useTimeSlots();
-  const daySlots = slots[date] ?? [];
+  const daySlots = useTimeSlotsStore((s) => s.slots[date] ?? EMPTY_SLOTS);
+  const addSlot = useTimeSlotsStore((s) => s.addSlot);
 
-  const addSlot = () => {
+  const handleAddSlot = () => {
     const slot: TimeSlot = {
       id: crypto.randomUUID(),
       start: "",
@@ -22,7 +24,7 @@ export default function SlotsTable({ date }: Props) {
       comment: "",
       subComments: [],
     };
-    dispatch({ type: "ADD_SLOT", date, slot });
+    addSlot(date, slot);
   };
 
   return (
@@ -30,7 +32,7 @@ export default function SlotsTable({ date }: Props) {
       <Box sx={{ mb: 1.5 }}>
         <Button
           startIcon={<AddIcon />}
-          onClick={addSlot}
+          onClick={handleAddSlot}
           variant="outlined"
           color="primary"
           size="small"

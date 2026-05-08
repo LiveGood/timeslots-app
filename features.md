@@ -43,11 +43,21 @@ Derived from [initial.md](initial.md). Unchecked = not yet implemented.
 - [x] Use browser DB (IndexedDB / localStorage) to persist slot data across refreshes
 - [x] Implement full CRUD: create, read, update, delete for time slots
 
+## TODO: Create csv export/import format
+- [] 
+
 ## Design
 
 - [ ] Material-style design
 - [ ] Palette restricted to white, black, and an appealing green
 - [ ] Time-slot table rows alternate white / green-tinted backgrounds
+
+## Performance Upgrades / Zustand Migration
+
+- [x] Migrate state management from React Context + useReducer to Zustand with per-component selectors
+- [x] Each component subscribes only to the state slice it needs (no full-tree re-renders on keystroke)
+- [x] `React.memo` on SlotRow so rows only re-render when their own slot prop changes
+- [x] Persist middleware with `skipHydration` replaces manual HYDRATE action pattern
 
 ## Extra
 

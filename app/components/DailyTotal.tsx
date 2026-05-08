@@ -9,7 +9,10 @@ import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import { useTimeSlots, SubComment, TimeSlot } from "../store/timeslots-context";
+import { useTimeSlotsStore, SubComment, TimeSlot } from "../store/timeslots-store";
+
+const EMPTY_SLOTS: TimeSlot[] = [];
+const EMPTY_COMMENTS: SubComment[] = [];
 
 function calcTotals(slots: TimeSlot[]): { minutes: number; formatted: string } {
   let total = 0;
@@ -33,26 +36,24 @@ function calcTotals(slots: TimeSlot[]): { minutes: number; formatted: string } {
 type Props = { date: string };
 
 export default function DailyTotal({ date }: Props) {
-  const { slots, dayComments, dayNotes, dispatch } = useTimeSlots();
+  const daySlots = useTimeSlotsStore((s) => s.slots[date] ?? EMPTY_SLOTS);
+  const comments = useTimeSlotsStore((s) => s.dayComments[date] ?? EMPTY_COMMENTS);
+  const note = useTimeSlotsStore((s) => s.dayNotes[date] ?? "");
+  const addDayComment = useTimeSlotsStore((s) => s.addDayComment);
+  const updateDayComment = useTimeSlotsStore((s) => s.updateDayComment);
+  const deleteDayComment = useTimeSlotsStore((s) => s.deleteDayComment);
+  const updateDayNote = useTimeSlotsStore((s) => s.updateDayNote);
+
   const [showComments, setShowComments] = useState(true);
 
-  const daySlots = slots[date] ?? [];
-  const comments = dayComments[date] ?? [];
-  const note = dayNotes[date] ?? "";
   const { minutes, formatted } = calcTotals(daySlots);
   const hasComments = comments.length > 0;
 
   const addComment = () => {
     const comment: SubComment = { id: crypto.randomUUID(), title: "", description: "" };
-    dispatch({ type: "ADD_DAY_COMMENT", date, comment });
+    addDayComment(date, comment);
     setShowComments(true);
   };
-
-  const updateComment = (comment: SubComment) =>
-    dispatch({ type: "UPDATE_DAY_COMMENT", date, comment });
-
-  const deleteComment = (commentId: string) =>
-    dispatch({ type: "DELETE_DAY_COMMENT", date, commentId });
 
   const cellSx = { py: "4px", px: 1 };
   const boxSx = {
@@ -95,7 +96,7 @@ export default function DailyTotal({ date }: Props) {
             >
               <TextField
                 value={c.title}
-                onChange={(e) => updateComment({ ...c, title: e.target.value })}
+                onChange={(e) => updateDayComment(date, { ...c, title: e.target.value })}
                 placeholder="Title"
                 size="small"
                 variant="outlined"
@@ -103,7 +104,7 @@ export default function DailyTotal({ date }: Props) {
               />
               <TextField
                 value={c.description}
-                onChange={(e) => updateComment({ ...c, description: e.target.value })}
+                onChange={(e) => updateDayComment(date, { ...c, description: e.target.value })}
                 placeholder="Description"
                 size="small"
                 variant="outlined"
@@ -111,7 +112,7 @@ export default function DailyTotal({ date }: Props) {
               />
               <IconButton
                 size="small"
-                onClick={() => deleteComment(c.id)}
+                onClick={() => deleteDayComment(date, c.id)}
                 sx={{ color: "text.secondary", "&:hover": { color: "error.main" } }}
               >
                 <DeleteIcon fontSize="small" />
@@ -143,7 +144,7 @@ export default function DailyTotal({ date }: Props) {
 
         <TextField
           value={note}
-          onChange={(e) => dispatch({ type: "UPDATE_DAY_NOTE", date, note: e.target.value })}
+          onChange={(e) => updateDayNote(date, e.target.value)}
           placeholder="Day comment…"
           size="small"
           variant="outlined"
