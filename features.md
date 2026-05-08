@@ -43,6 +43,11 @@ Derived from [initial.md](initial.md). Unchecked = not yet implemented.
 - [x] Use browser DB (IndexedDB / localStorage) to persist slot data across refreshes
 - [x] Implement full CRUD: create, read, update, delete for time slots
 
+## Add years support
+
+- [x] On the same tab level as the months, on the top right add dropdown of years
+- [x] Tab should contain the current year and look the same as the months tab, but it must have a visible "clickable" property to change the year
+
 ## TODO: Create csv export/import format
 - [] 
 
