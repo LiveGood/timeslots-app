@@ -31,10 +31,12 @@ Derived from [initial.md](initial.md). Unchecked = not yet implemented.
 
 ## Total for the day
 
-- [ ] Total time row pinned to the bottom of the page regardless of slot count
-- [ ] Box showing total minutes for the day
-- [ ] Box showing total time in `HH:mm` format
-- [ ] Totals update automatically when a slot's START/END become complete
+- [x] Total time row pinned to the bottom of the page regardless of slot count
+- [x] Box showing total minutes for the day
+- [x] Box showing total time in `HH:mm` format
+- [x] Totals update automatically when a slot's START/END become complete
+- [x] Must have a base comment field (like each slot row) and sub-comment adding for the day
+- [x] Make sure total time is persisted on refreshes
 
 ## Persistence
 

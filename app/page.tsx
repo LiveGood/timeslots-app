@@ -4,6 +4,7 @@ import { useState } from "react";
 import Box from "@mui/material/Box";
 import CalendarNav from "./components/CalendarNav";
 import SlotsTable from "./components/SlotsTable";
+import DailyTotal from "./components/DailyTotal";
 
 function todayKey() {
   const d = new Date();
@@ -19,9 +20,10 @@ export default function Home() {
   return (
     <Box sx={{ minHeight: "100vh", bgcolor: "background.default" }}>
       <CalendarNav selectedDate={selectedDate} onDateChange={setSelectedDate} />
-      <Box sx={{ px: "10%", py: 2 }}>
+      <Box sx={{ px: "10%", py: 2, pb: "80px" }}>
         <SlotsTable date={selectedDate} />
       </Box>
+      <DailyTotal date={selectedDate} />
     </Box>
   );
 }
